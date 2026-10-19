@@ -1,6 +1,7 @@
 # Real-Time Collaborative Document Editor
 
 <!-- badges -->
+[![CI](https://github.com/Urthella/realtime-collab-editor/actions/workflows/ci.yml/badge.svg)](https://github.com/Urthella/realtime-collab-editor/actions/workflows/ci.yml)
 [![Stars](https://img.shields.io/github/stars/Urthella/realtime-collab-editor?style=flat-square&logo=github)](https://github.com/Urthella/realtime-collab-editor)
 [![Last commit](https://img.shields.io/github/last-commit/Urthella/realtime-collab-editor?style=flat-square)](https://github.com/Urthella/realtime-collab-editor/commits/main)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
