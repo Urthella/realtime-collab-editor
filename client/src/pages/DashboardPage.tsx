@@ -70,7 +70,7 @@ export default function DashboardPage() {
   return (
     <div className="page">
       <header className="topbar">
-        <span className="brand">Loop</span>
+        <span className="brand">Collab</span>
         <div className="topbar-right">
           <span className="muted">{user.name}</span>
           <button className="btn btn-ghost" onClick={signOut}>

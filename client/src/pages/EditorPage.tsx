@@ -107,7 +107,7 @@ export default function EditorPage() {
       <div className="page">
         <header className="topbar">
           <Link className="brand" to="/">
-            Loop
+            Collab
           </Link>
         </header>
         <main className="editor-error">
@@ -125,7 +125,7 @@ export default function EditorPage() {
       <header className="topbar">
         <div className="topbar-left">
           <Link className="brand" to="/">
-            Loop
+            Collab
           </Link>
           <span className="doc-heading" title={meta?.title}>
             {meta?.title ?? 'Loading…'}

@@ -38,7 +38,7 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={onSubmit}>
-        <h1 className="brand">Loop</h1>
+        <h1 className="brand">Collab</h1>
         <p className="auth-subtitle">Real-time collaborative documents</p>
         {error && <div className="form-error">{error}</div>}
         <label>

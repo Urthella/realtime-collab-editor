@@ -1,4 +1,16 @@
-# Loop — Real-Time Collaborative Document Editor
+# Real-Time Collaborative Document Editor
+
+<!-- badges -->
+[![Stars](https://img.shields.io/github/stars/Urthella/realtime-collab-editor?style=flat-square&logo=github)](https://github.com/Urthella/realtime-collab-editor)
+[![Last commit](https://img.shields.io/github/last-commit/Urthella/realtime-collab-editor?style=flat-square)](https://github.com/Urthella/realtime-collab-editor/commits/main)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![Yjs CRDT](https://img.shields.io/badge/Yjs%20CRDT-6E56CF?style=flat-square)
+![WebSocket](https://img.shields.io/badge/WebSocket-010101?style=flat-square)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
 
 A Google-Docs-style collaborative editor built to demonstrate real-time systems engineering:
 **CRDT-based concurrent editing (Yjs), a WebSocket sync protocol, debounced snapshot persistence,
@@ -199,3 +211,16 @@ The client is verified by `tsc --noEmit` + `vite build` (`npm run typecheck -w c
 | 3 | Persistence & version history | Debounced snapshotting (≤1 write/2s + flush on last disconnect), bounded snapshot history with restore-as-new-edit (`ws/saver.ts`, storage adapters, snapshots API) |
 | 4 | Presence system | Yjs awareness relay, colored remote cursors (CollaborationCursor), avatar bar, connection status indicator |
 | 5 | Sharing, permissions & hardening | viewer/editor/owner ACL enforced on REST **and** WS (read-only sync for viewers, 4401 rejects), share dialog, graceful shutdown flush, keepalive ping/pong |
+
+---
+
+## Related projects
+
+Part of my backend and distributed-systems series:
+
+- [**distributed-rate-limiter**](https://github.com/Urthella/distributed-rate-limiter): token bucket, sliding window and fixed window limits with atomic Redis Lua
+- [**rag-codebase-qa**](https://github.com/Urthella/rag-codebase-qa): AST-aware chunking, hybrid BM25 + vector retrieval, cited answers
+- [**event-driven-order-system**](https://github.com/Urthella/event-driven-order-system): saga orchestration, compensating transactions, idempotent consumers, tracing
+- [**job-queue-orchestrator**](https://github.com/Urthella/job-queue-orchestrator): race-safe job claiming, retries with backoff, dead-letter queue, DAG workflows
+
+More of my work: [github.com/Urthella](https://github.com/Urthella) · [utkudemirtas.tech](https://www.utkudemirtas.tech)
