@@ -14,13 +14,13 @@
 
 A Google-Docs-style collaborative editor built to demonstrate real-time systems engineering:
 **CRDT-based concurrent editing (Yjs), a WebSocket sync protocol, debounced snapshot persistence,
-a live presence system, and permission-aware sharing** — all runnable with zero external services.
+a live presence system, and permission-aware sharing**: all runnable with zero external services.
 
 - **Frontend:** React + TypeScript (Vite), Tiptap editor bound to Yjs
 - **Real-time:** `ws` WebSocket server speaking the y-protocols sync/awareness wire protocol
   (compatible with the stock `y-websocket` client provider)
 - **Backend:** Node.js + TypeScript, Express REST API (auth, documents, sharing, version history)
-- **Storage:** pluggable adapter — SQLite by default (better-sqlite3 with a `node:sqlite` fallback),
+- **Storage:** pluggable adapter: SQLite by default (better-sqlite3 with a `node:sqlite` fallback),
   PostgreSQL adapter selected via `DATABASE_URL`
 - **Auth:** JWT (bcrypt password hashing), enforced on both REST and WebSocket connections
 
@@ -45,7 +45,7 @@ npm test             # server test suite (vitest) + client type check
 npm run build        # compiles server (tsc) and client (tsc + vite build)
 ```
 
-Configuration is via environment variables — see `.env.example` (everything has a dev default,
+Configuration is via environment variables: see `.env.example` (everything has a dev default,
 so no `.env` is required to run locally).
 
 ---
@@ -77,7 +77,7 @@ flowchart LR
 With naive "send the whole document" or operational-transform approaches, concurrent edits either
 clobber each other or require a central transformation authority with complex server logic. Yjs is a
 CRDT (conflict-free replicated data type): every client holds a full replica and applies local edits
-immediately (zero-latency typing), updates commute — they can arrive in any order, any number of
+immediately (zero-latency typing), updates commute: they can arrive in any order, any number of
 times, and all replicas **converge without a central arbiter**. That gives us offline tolerance,
 trivially correct reconnection (state-vector diff exchange), and a server whose sync role is mostly
 *relay + persistence*, not conflict resolution.
@@ -87,11 +87,11 @@ trivially correct reconnection (state-vector diff exchange), and a server whose 
 The server implements the y-protocols wire format over raw `ws` (message type `0` = sync,
 `1` = awareness), so the unmodified `y-websocket` client provider connects to it:
 
-1. **Handshake** — on connect the server sends *SyncStep1* (its state vector). The client responds
+1. **Handshake**: on connect the server sends *SyncStep1* (its state vector). The client responds
    with *SyncStep2* (exactly the updates the server is missing) and sends its own *SyncStep1* back.
-2. **Steady state** — every local edit is broadcast as an incremental *Update* message to all other
+2. **Steady state**: every local edit is broadcast as an incremental *Update* message to all other
    connections in the room.
-3. **Permission enforcement** — connections are authenticated at upgrade time (JWT in the `token`
+3. **Permission enforcement**: connections are authenticated at upgrade time (JWT in the `token`
    query param) and authorized against the document's ACL. Viewers get a read-only connection: the
    server accepts their *SyncStep1* (so they can pull state) but **silently drops incoming
    SyncStep2/Update messages**. Unauthorized sockets are closed with app code `4401` so the client
@@ -107,18 +107,18 @@ Instead each open document ("room") has a `DebouncedSaver`:
 - On **last-client-disconnect** the room is flushed immediately, an entry is added to the bounded
   **snapshot history** (last `SNAPSHOT_HISTORY_LIMIT`, default 20, with timestamps), and the room is
   unloaded from memory.
-- The latest state (`document_state`) is an *upsert* — the full encoded Yjs update — while
+- The latest state (`document_state`) is an *upsert* (the full encoded Yjs update) while
   `snapshots` is an append-and-prune history table used by the version-history UI.
 
 **Restore** is CRDT-safe: the snapshot content *replaces* the live fragment inside a single Yjs
 transaction (a new edit on top of history), so already-connected clients converge on the restored
-content naturally — no doc swapping, no client reload, and the pre-restore content is automatically
+content naturally: no doc swapping, no client reload, and the pre-restore content is automatically
 snapshotted first as a safety net.
 
 ### Presence
 
 Presence (who's online, name, color, live cursor + selection) rides on **Yjs awareness**, which is
-deliberately *not* persisted — it is ephemeral state relayed through the same WebSocket. The server
+deliberately *not* persisted: it is ephemeral state relayed through the same WebSocket. The server
 tracks which awareness client-ids each socket controls and removes them on disconnect, so ghosts
 disappear immediately. Tiptap's `CollaborationCursor` renders remote cursors; the header shows
 avatar chips derived from the same awareness map.
@@ -135,8 +135,8 @@ avatar chips derived from the same awareness map.
 
 | Method | Path | Role | Purpose |
 | --- | --- | --- | --- |
-| GET | `/api/health` | — | liveness probe |
-| POST | `/api/auth/register` · `/login` | — | obtain JWT |
+| GET | `/api/health` | - | liveness probe |
+| POST | `/api/auth/register` · `/login` | - | obtain JWT |
 | GET | `/api/auth/me` | any | token introspection |
 | GET/POST | `/api/documents` | any | list / create |
 | GET/PATCH/DELETE | `/api/documents/:id` | viewer / owner / owner | read / rename / delete |
@@ -148,11 +148,11 @@ avatar chips derived from the same awareness map.
 
 ### How Postgres & Redis slot in for production
 
-- **PostgreSQL** — already implemented (`server/src/storage/postgres.ts`, same `StorageAdapter`
+- **PostgreSQL**: already implemented (`server/src/storage/postgres.ts`, same `StorageAdapter`
   interface, `BYTEA` state columns). Set `DATABASE_URL=postgres://…` and the factory picks it up;
   nothing else changes. SQLite is the default only because this project must run with zero external
   services.
-- **Redis** — awareness/presence is in-memory per server instance here. To scale horizontally you'd
+- **Redis**: awareness/presence is in-memory per server instance here. To scale horizontally you'd
   run multiple stateless sync servers and use Redis pub/sub (e.g. y-redis) to fan out document
   updates and awareness between instances, plus sticky-session or room-partitioned routing. The
   storage adapter boundary and the relay-style RoomManager were shaped so that swap stays local.
@@ -191,13 +191,13 @@ project-01-collab-editor/
 
 `npm test -w server` covers:
 
-- **Auth** — register/login/duplicate/weak-password/token validation flows.
-- **Permissions** — full role matrix over REST plus `resolveWsAccess` for the WebSocket gate
+- **Auth**: register/login/duplicate/weak-password/token validation flows.
+- **Permissions**: full role matrix over REST plus `resolveWsAccess` for the WebSocket gate
   (owner/editor write, viewer read-only, stranger rejected).
-- **Debounced snapshotting** — fake-timer proofs that a burst of edits produces one write, that
+- **Debounced snapshotting**: fake-timer proofs that a burst of edits produces one write, that
   continuous typing saves once per window (5 writes for 10s of typing), and that
   last-client-disconnect flushes + snapshots + unloads the room.
-- **Storage round-trip** — Yjs update → save → load → byte-identical state vectors, snapshot
+- **Storage round-trip**: Yjs update → save → load → byte-identical state vectors, snapshot
   pruning to N, per-document scoping, cascade delete.
 
 The client is verified by `tsc --noEmit` + `vite build` (`npm run typecheck -w client`).
